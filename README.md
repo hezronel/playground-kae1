@@ -6,9 +6,9 @@ This is a javascript app using HTML, CSS, and JavaScript, played on a canvas ele
 
 You can control the direction of the object using the "W, A, D" on your keyboard:
 <ul>
-  <li>W: move the object forward.</li>
-  <li>A: rotate object to the left.</li>
-  <li>D: rotate object to the right.</li>
+  <li>W: press/hold to move the object forward.</li>
+  <li>A: press/hold to rotate the object to the left.</li>
+  <li>D: press/hold to rotate the object to the right.</li>
 </ul>
 
 <h2>Built With</h2>
