@@ -1,0 +1,12 @@
+body{
+    margin:0px;
+    padding:0px;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: rgb(51 51 51);
+}
+canvas{
+    box-shadow: 10px 2px 40px rgb(51 51 51);
+}
