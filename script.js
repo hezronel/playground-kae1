@@ -5,11 +5,11 @@ class Robot {
     y = 0
     dir = 0
     grid = null
-    speedMove = 20
+    speedMove = 10
     speedRotate = 10
     width = 50
-    height = 20
-    maxSize = 70
+    height = 50
+    maxSize = 70.71067
     
     constructor(x,y,dir,width,height,grid) {
         this.grid = grid
@@ -97,7 +97,7 @@ function drawGame() {
 
 // --- Init ---
 
-var rob = new Robot(110,220,0,40,40,canvas)
+var rob = new Robot(38,48,28,58,58,canvas)
 drawGame()
 
 document.onkeydown = function (e) {

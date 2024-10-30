@@ -5,8 +5,16 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: rgb(51 51 51);
+    background-color: white;
+    background-image: url("https://bellroy-cms-images.imgix.net/1259/background-texture-repeat.jpg?auto=format&fit=max");
+    font-family: ui-sans-serif, system-ui, sans-serif;
+}
+h1 {
+    background-color: rgb(225 90 29);
+    color: white;
+    padding: 5px 20px;
+    box-shadow: 0 17px 9px -15px rgb(0 0 0 / 50%);
 }
 canvas{
-    box-shadow: 10px 2px 40px rgb(51 51 51);
+    box-shadow: 0px 0px 40px rgb(0 0 0 / 15%);
 }
