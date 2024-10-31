@@ -18,12 +18,12 @@ class Robot {
         this.dir = dir
         let maxSize = Math.sqrt(Math.pow(this.width,2) + Math.pow(this.height,2));
         this.maxSize = maxSize
-        if (this.width > this.height) {
-            this.x = (this.maxSize - Math.max(this.width,this.height))/2
-            this.y = (this.maxSize - Math.min(this.width,this.height))/2
-        } else {
-            this.x = (this.maxSize - Math.min(this.width,this.height))/2
-            this.y = (this.maxSize - Math.max(this.width,this.height))/2
+        this.x = (this.maxSize - Math.max(this.width,this.height))/2
+        this.y = (this.maxSize - Math.min(this.width,this.height))/2
+        if (this.width < this.height) {
+            let temp = this.x
+            this.x = this.y
+            this.y = temp
         }
         this.setPosition(x,y)
     }
@@ -86,6 +86,11 @@ function drawRobot() {
     ctx.arc(rob.x+rob.width-rob.maxSize/8-2, rob.y+rob.height/2, rob.maxSize/8, 0, 2 * Math.PI);
     ctx.fillStyle = "white";
     ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(rob.x+rob.width-rob.maxSize/12-2-rob.maxSize/12/2, rob.y+rob.height/2, rob.maxSize/12, 0, 2 * Math.PI);
+    ctx.fillStyle = "rgb(51,51,51)";
+    ctx.fill();
 }
 
 function drawGame() {
@@ -95,26 +100,89 @@ function drawGame() {
     ctx.restore();
 }
 
-// --- Init ---
+function objMoveForward() {
+    rob.moveForward();
+    drawGame();
+}
 
-var rob = new Robot(38,48,28,58,58,canvas)
-drawGame()
+function objRotateLeft() {
+    rob.rotateLeft()
+    drawGame();
+}
+
+function objRotateRight() {
+    rob.rotateRight()
+    drawGame();
+}
 
 document.onkeydown = function (e) {
     e = e || window.event;
     if (e.keyCode == 87) {
         // press "W"
-        rob.moveForward();
-        drawGame();
+        stopAutoMove()
+        objMoveForward()
     } else if (e.keyCode == 65) {
         // press "A"
-        rob.rotateLeft()
-        drawGame();
+        stopAutoMove()
+        objRotateLeft()
     } else if (e.keyCode == 68) {
         // press "D"
-        rob.rotateRight()
-        drawGame();
+        stopAutoMove()
+        objRotateRight()
     } else if (e.keyCode == 83) {
         // press "S"
     }
 };
+
+document.onkeypress = function (e) {
+    e = e || window.event;
+    if (e.keyCode == 114) {
+        // press "R"
+        if (timeout || interval) {
+            stopAutoMove()
+        } else {
+            autoMove()
+        }
+    }
+};
+
+var wasRotate = false
+var timeout = null
+var interval = null
+
+function stopAutoMove() {
+    if (timeout) {
+        clearTimeout(timeout)
+        timeout = null
+    }
+
+    if (interval) {
+        clearTimeout(interval)
+        interval = null
+    }
+}
+
+function autoMove() {
+    stopAutoMove()
+
+    wasRotate = !wasRotate
+    let randomTimer = wasRotate ? Math.floor(Math.random() * 2) + 1 : Math.floor(Math.random() * 2) + 0.5
+    let nextMove = wasRotate ? 0 : Math.floor(Math.random() * 2) + 1
+
+    interval = setInterval(function() {
+        if (nextMove == 0) {
+            objMoveForward()
+        } else if (nextMove == 1) {
+            objRotateLeft()
+        } else if (nextMove == 2) {
+            objRotateRight()
+        }
+    }, 100)
+
+    timeout = setTimeout(function() {
+        autoMove()
+    }, randomTimer * 1000)
+}
+
+var rob = new Robot(80,80,30,50,50,canvas)
+drawGame()
