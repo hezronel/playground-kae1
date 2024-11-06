@@ -5,13 +5,12 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: white;
-    background-image: url("https://bellroy-cms-images.imgix.net/1259/background-texture-repeat.jpg?auto=format&fit=max");
+    background-color: #c0c0c0;
     font-family: ui-sans-serif, system-ui, sans-serif;
 }
 h1 {
     background-color: rgb(225 90 29);
-    color: white;
+    color: rgb(246 244 241);
     padding: 5px 20px;
     box-shadow: 0 17px 9px -15px rgb(0 0 0 / 50%);
 }
