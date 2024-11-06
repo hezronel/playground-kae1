@@ -4,11 +4,12 @@ This is a javascript app using HTML, CSS, and JavaScript, played on a canvas ele
 
 <h2>How To Play</h2>
 
-You can control the direction of the object using the "W, A, D" on your keyboard:
+You can control the direction of the object using the "W, A, D, R" on your keyboard:
 <ul>
   <li>W: press/hold to move the object forward.</li>
   <li>A: press/hold to rotate the object to the left.</li>
   <li>D: press/hold to rotate the object to the right.</li>
+  <li>R: press to enable/disable auto move.</li>
 </ul>
 
 <h2>Built With</h2>
