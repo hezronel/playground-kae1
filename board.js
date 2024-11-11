@@ -46,12 +46,12 @@ class Board {
         this.ctx.fillRect(rob.x , rob.y, rob.width, rob.height);
 
         this.ctx.beginPath();
-        this.ctx.arc(rob.x+rob.width-rob.maxSize/8-2, rob.y+rob.height/2, rob.maxSize/8, 0, 2 * Math.PI);
+        this.ctx.arc(rob.x+rob.width-rob.diagonal/8-2, rob.y+rob.height/2, rob.diagonal/8, 0, 2 * Math.PI);
         this.ctx.fillStyle = rob.eyeColor1;
         this.ctx.fill();
 
         this.ctx.beginPath();
-        this.ctx.arc(rob.x+rob.width-rob.maxSize/12-2-rob.maxSize/12/2, rob.y+rob.height/2, rob.maxSize/12, 0, 2 * Math.PI);
+        this.ctx.arc(rob.x+rob.width-rob.diagonal/12-2-rob.diagonal/12/2, rob.y+rob.height/2, rob.diagonal/12, 0, 2 * Math.PI);
         this.ctx.fillStyle = rob.eyeColor2;
         this.ctx.fill();
     }
