@@ -7,8 +7,8 @@ class Robot {
     x = 0
     y = 0
     dir = 0
-    width = 50
-    height = 50
+    w = 50
+    h = 50
     diagonal = 70.71067
 
     bodyColor = "rgb(225,90,29)"
@@ -23,20 +23,20 @@ class Robot {
     timeout = null
     interval = null
     
-    constructor(x,y,dir,width,height,bodyColor,eyeColor1,eyeColor2) {
+    constructor(x,y,dir,w,h,bodyColor,eyeColor1,eyeColor2) {
         this.x = x
         this.y = y
         this.dir = dir
         
-        this.width = Math.max(Math.min(width,MAX_SIZE),MIN_SIZE)
-        this.height = Math.max(Math.min(height,MAX_SIZE),MIN_SIZE)
-        this.diagonal = Math.sqrt(Math.pow(this.width,2) + Math.pow(this.height,2));
+        this.w = Math.max(Math.min(w,MAX_SIZE),MIN_SIZE)
+        this.h = Math.max(Math.min(h,MAX_SIZE),MIN_SIZE)
+        this.diagonal = Math.sqrt(Math.pow(this.w,2) + Math.pow(this.h,2));
 
         if (bodyColor) this.bodyColor = bodyColor
         if (eyeColor1) this.eyeColor1 = eyeColor1
         if (eyeColor2) this.eyeColor2 = eyeColor2
 
-        this.speed = this.getMovementSpeed(this.width,this.height)
+        this.speed = this.getMovementSpeed(this.w,this.h)
     }
 
     getMovementSpeed(w,h) {
@@ -54,9 +54,9 @@ class Robot {
     setBoard(board) {
         this.board = board
         if (!this.setNewPosition(this.x,this.y)) {
-            this.x = (this.diagonal - Math.max(this.width,this.height))/2
-            this.y = (this.diagonal - Math.min(this.width,this.height))/2
-            if (this.width < this.height) {
+            this.x = (this.diagonal - Math.max(this.w,this.h))/2
+            this.y = (this.diagonal - Math.min(this.w,this.h))/2
+            if (this.w < this.h) {
                 let temp = this.x
                 this.x = this.y
                 this.y = temp
@@ -66,16 +66,16 @@ class Robot {
     
     setNewPosition(x,y) {
         var lW, rW, tW, bW;
-        if (this.width > this.height) {
-            lW = x >= (this.diagonal - Math.max(this.width,this.height))/2
-            rW = this.board.width >= x + this.diagonal - (this.diagonal - Math.max(this.width,this.height))/2
-            tW = y >= (this.diagonal - Math.min(this.width,this.height))/2
-            bW = this.board.height >= y + this.diagonal - (this.diagonal - Math.min(this.width,this.height))/2
+        if (this.w > this.h) {
+            lW = x >= (this.diagonal - Math.max(this.w,this.h))/2
+            rW = this.board.w >= x + this.diagonal - (this.diagonal - Math.max(this.w,this.h))/2
+            tW = y >= (this.diagonal - Math.min(this.w,this.h))/2
+            bW = this.board.h >= y + this.diagonal - (this.diagonal - Math.min(this.w,this.h))/2
         } else {
-            lW = x >= (this.diagonal - Math.min(this.width,this.height))/2
-            rW = this.board.width >= x + this.diagonal - (this.diagonal - Math.min(this.width,this.height))/2
-            tW = y >= (this.diagonal - Math.max(this.width,this.height))/2
-            bW = this.board.height >= y + this.diagonal - (this.diagonal - Math.max(this.width,this.height))/2
+            lW = x >= (this.diagonal - Math.min(this.w,this.h))/2
+            rW = this.board.w >= x + this.diagonal - (this.diagonal - Math.min(this.w,this.h))/2
+            tW = y >= (this.diagonal - Math.max(this.w,this.h))/2
+            bW = this.board.h >= y + this.diagonal - (this.diagonal - Math.max(this.w,this.h))/2
         }
         if (lW && rW && tW && bW) {
             this.x = x;

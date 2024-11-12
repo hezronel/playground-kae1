@@ -8,8 +8,8 @@ const R_KEY = 114;
 class Board {
     canvas = null
     ctx = null
-    width = 0
-    height = 0
+    w = 0
+    h = 0
 
     selectedRobot = null
     robots = []
@@ -18,8 +18,8 @@ class Board {
 
     constructor(canvas, robots) {
         this.canvas = canvas
-        this.width = canvas.width
-        this.height = canvas.height
+        this.w = canvas.width
+        this.h = canvas.height
         this.ctx = canvas.getContext("2d");
         this.robots = robots 
         this.selectedRobot = robots[0]
@@ -33,25 +33,25 @@ class Board {
     }
 
     clearScreen() {
-        this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+        this.ctx.clearRect(0, 0, this.w, this.h);
         this.ctx.fillStyle = "rgb(246,244,241)";
-        this.ctx.fillRect(0, 0, canvas.width, canvas.height);
+        this.ctx.fillRect(0, 0, this.w, this.h);
     }
 
     drawRobot(rob) {
-        this.ctx.translate(rob.x + rob.width/2, rob.y + rob.height/2);
+        this.ctx.translate(rob.x + rob.w/2, rob.y + rob.h/2);
         this.ctx.rotate(rob.dir * Math.PI / 180);
-        this.ctx.translate(-(rob.width/2) - rob.x, -(rob.height/2) - rob.y);
+        this.ctx.translate(-(rob.w/2) - rob.x, -(rob.h/2) - rob.y);
         this.ctx.fillStyle = rob.bodyColor;
-        this.ctx.fillRect(rob.x , rob.y, rob.width, rob.height);
+        this.ctx.fillRect(rob.x , rob.y, rob.w, rob.h);
 
         this.ctx.beginPath();
-        this.ctx.arc(rob.x+rob.width-rob.diagonal/8-2, rob.y+rob.height/2, rob.diagonal/8, 0, 2 * Math.PI);
+        this.ctx.arc(rob.x+rob.w-rob.diagonal/8-2, rob.y+rob.h/2, rob.diagonal/8, 0, 2 * Math.PI);
         this.ctx.fillStyle = rob.eyeColor1;
         this.ctx.fill();
 
         this.ctx.beginPath();
-        this.ctx.arc(rob.x+rob.width-rob.diagonal/12-2-rob.diagonal/12/2, rob.y+rob.height/2, rob.diagonal/12, 0, 2 * Math.PI);
+        this.ctx.arc(rob.x+rob.w-rob.diagonal/12-2-rob.diagonal/12/2, rob.y+rob.h/2, rob.diagonal/12, 0, 2 * Math.PI);
         this.ctx.fillStyle = rob.eyeColor2;
         this.ctx.fill();
     }
@@ -125,13 +125,26 @@ class Board {
     keyPress(e) {
         if (e.keyCode == R_KEY) {
             if (this.intervalDrawGame) {
-                if (!this.selectedRobot.interval) {
+                if (this.selectedRobot && !this.selectedRobot.interval) {
                     this.selectedRobot.autoMove()
                 } else {
                     this.stopAutoMove()
                 }
             } else {
                 this.autoMove()
+            }
+        }
+    }
+
+    mouseDown(e) {
+        for (let i in this.robots) {
+            let rob = this.robots[i]
+            if (e.offsetX >= rob.x && 
+                e.offsetY >= rob.y && 
+                e.offsetX <= rob.x+rob.w && 
+                e.offsetY <= rob.y+rob.h) {
+                this.selectedRobot = rob
+                break
             }
         }
     }
