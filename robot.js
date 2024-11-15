@@ -3,19 +3,9 @@
 const MAX_SIZE = 60
 const MIN_SIZE = 20
 
-class Robot {
-    x = 0
-    y = 0
-    dir = 0
-    w = 50
-    h = 50
-    diagonal = 70.71067
+class Robot extends Rect {
+    isRobot = true
 
-    bodyColor = "rgb(225,90,29)"
-    eyeColor1 = "white"
-    eyeColor2 = "rgb(51,51,51)"
-
-    speed = 10
     isMoveForward = false
 
     board = null
@@ -23,67 +13,44 @@ class Robot {
     timeout = null
     interval = null
     
-    constructor(x,y,dir,w,h,bodyColor,eyeColor1,eyeColor2) {
-        this.x = x
-        this.y = y
+    constructor(x,y,dir,w,h,color="rgb(225,90,29)",eyeColor1="white",eyeColor2="rgb(51,51,51)") {
+        super(x,y,w,h,color)
         this.dir = dir
         
-        this.w = Math.max(Math.min(w,MAX_SIZE),MIN_SIZE)
-        this.h = Math.max(Math.min(h,MAX_SIZE),MIN_SIZE)
+        this.w = Math.max(Math.min(this.w,MAX_SIZE),MIN_SIZE)
+        this.h = Math.max(Math.min(this.h,MAX_SIZE),MIN_SIZE)
         this.diagonal = Math.sqrt(Math.pow(this.w,2) + Math.pow(this.h,2));
 
-        if (bodyColor) this.bodyColor = bodyColor
-        if (eyeColor1) this.eyeColor1 = eyeColor1
-        if (eyeColor2) this.eyeColor2 = eyeColor2
+        this.eyeColor1 = eyeColor1
+        this.eyeColor2 = eyeColor2
 
-        this.speed = this.getMovementSpeed(this.w,this.h)
+        this.speed = this.getSpeed(this.w,this.h)
     }
 
-    getMovementSpeed(w,h) {
+    getSpeed(w,h) {
         let a = w*h
-        // let s = -Math.pow(a/100,2)/90 + 20
-        // console.log(a/100," x ",s)
-
         let r = (a/(MAX_SIZE*MAX_SIZE))*(Math.PI/18)
         let s = 12*Math.pow(Math.cos(6*r),2)
-        // console.log(a," x ",s)
-
         return s
     }
 
     setBoard(board) {
         this.board = board
-        if (!this.setNewPosition(this.x,this.y)) {
-            this.x = (this.diagonal - Math.max(this.w,this.h))/2
-            this.y = (this.diagonal - Math.min(this.w,this.h))/2
+        if (board.isCollision(this, this.x,this.y)) {
+            var x = (this.diagonal - Math.max(this.w,this.h))/2
+            var y = (this.diagonal - Math.min(this.w,this.h))/2
             if (this.w < this.h) {
-                let temp = this.x
-                this.x = this.y
-                this.y = temp
+                let temp = x
+                x = y
+                y = temp
             }
+            this.setNewPosition(x,y)
         }
     }
     
     setNewPosition(x,y) {
-        var lW, rW, tW, bW;
-        if (this.w > this.h) {
-            lW = x >= (this.diagonal - Math.max(this.w,this.h))/2
-            rW = this.board.w >= x + this.diagonal - (this.diagonal - Math.max(this.w,this.h))/2
-            tW = y >= (this.diagonal - Math.min(this.w,this.h))/2
-            bW = this.board.h >= y + this.diagonal - (this.diagonal - Math.min(this.w,this.h))/2
-        } else {
-            lW = x >= (this.diagonal - Math.min(this.w,this.h))/2
-            rW = this.board.w >= x + this.diagonal - (this.diagonal - Math.min(this.w,this.h))/2
-            tW = y >= (this.diagonal - Math.max(this.w,this.h))/2
-            bW = this.board.h >= y + this.diagonal - (this.diagonal - Math.max(this.w,this.h))/2
-        }
-        if (lW && rW && tW && bW) {
-            this.x = x;
-            this.y = y;
-            return true
-        } else {
-            return false
-        }
+        this.x = x;
+        this.y = y;
     }
     
     rotateRight() {
@@ -105,7 +72,12 @@ class Robot {
         let x = (this.x * Math.pow(10,15) + this.speed * Math.cos(radians).toFixed(15) * Math.pow(10,15))/Math.pow(10,15);
         let y = (this.y * Math.pow(10,15) + this.speed * Math.sin(radians).toFixed(15) * Math.pow(10,15))/Math.pow(10,15);
         this.isMoveForward = true
-        return this.setNewPosition(x, y)
+        if (!board.isCollision(this,x,y)) {
+            this.setNewPosition(x, y)
+            return true
+        } else {
+            return false
+        }
     }
 
     stopAutoMove() {
